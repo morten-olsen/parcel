@@ -9,6 +9,15 @@ interface Props {
   file: File;
 }
 
+const downloadLink = (name: string, url: string) => {
+  const downloadLink = document.createElement('a');
+  downloadLink.href = url;
+  downloadLink.download = name;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+};
+
 const Button = styled.button`
   background: none;
   border: none;
@@ -37,9 +46,7 @@ const FileView: React.FC<Props> = ({
       right={!!file.link && (
         <>
           <Cell>
-            <a target="_blank" href={file.link}>
-              <Button><Download /></Button>
-            </a>
+            <Button onClick={() => downloadLink(file.name, file.link)}><Download /></Button>
           </Cell>
           <Cell>
             <Button onClick={remove}><Trash /></Button>
