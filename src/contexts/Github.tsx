@@ -34,7 +34,6 @@ const GithubContext = createContext<GithubContextType>({
 });
 
 const headers = {
-  authorization: "token 22924bb3da8465e7e8575740f2fc0a4971c908db",
 };
 
 const GithubProvider: React.FC<Props> = ({
