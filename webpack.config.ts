@@ -10,7 +10,7 @@ const config: Configuration = {
     ],
   },
   output: {
-    path: path.join(__dirname, 'docs'),
+    path: path.join(__dirname, 'dist'),
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
