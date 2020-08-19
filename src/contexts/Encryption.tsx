@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useContext, createContext } from 'react';
 import * as openpgp from 'openpgp';
 import { nanoid } from 'nanoid';
+import { message } from 'antd';
 import GithubContext from './Github';
 
 export interface FileType {
@@ -14,7 +15,7 @@ export interface FileType {
 interface EncryptionContextType {
   files: {[id: string]: FileType};
   addFile: (file: File) => Promise<void>;
-  addText: (text: string) => Promise<void>;
+  addText: (text: string, name: string) => Promise<void>;
   deleteFile: (id: string) => void;
 }
 
@@ -32,7 +33,7 @@ const encrypt = async (keys: string[], content: string) => {
   const encrypted = await openpgp.encrypt({
     message,
     armor: true,
-    publicKeys: armoredKeys.reduce((output, key: any) => [...output, ...key.keys], []),
+    publicKeys: armoredKeys.reduce<any>((output, key: any) => [...output, ...key.keys], []),
   });
   const { data } = encrypted;
   const blob = new Blob([data], {
@@ -55,7 +56,9 @@ const EncryptionProvider: React.FC = ({
     });
   }, [files]);
 
-  const add = (name: string = nanoid()) => {
+  const add = (name: string) => {
+    const id = nanoid();
+    message.info(`Beginning to encrypt ${name}`);
     const file: FileType = {
       name: `${name}.asc`,
       reciever: username,
@@ -63,19 +66,20 @@ const EncryptionProvider: React.FC = ({
     };
     setFiles(files => ({
       ...files,
-      [name]: file,
+      [id]: file,
     }));
 
     const setError = (err: any) => {
       console.error(err);
       setFiles(files => ({
         ...files,
-        [name]: {
-          ...files[name],
+        [id]: {
+          ...files[id],
           status: 'failed',
           error: err,
         },
       }));
+      message.error(`Failed to encrypt ${name}`);
     };
 
     const setContent = (text: string, keys: string[]) => {
@@ -84,12 +88,13 @@ const EncryptionProvider: React.FC = ({
           const encrypted = await encrypt(keys, text);
           setFiles(files => ({
             ...files,
-            [name]: {
-              ...files[name],
+            [id]: {
+              ...files[id],
               link: encrypted,
               status: 'encrypted'
             },
           }));
+          message.success(`Done encrypting ${name}`);
         } catch (err) {
           setError(err);
         }
@@ -104,7 +109,6 @@ const EncryptionProvider: React.FC = ({
   }
 
   const addFile = useCallback(async (file: File) => {
-    console.log('a', keys, file);
     if (!keys) return;
     const addedFile = add(file.name);
     const reader = new FileReader()
@@ -112,15 +116,14 @@ const EncryptionProvider: React.FC = ({
     reader.onabort = addedFile.setError,
     reader.onerror = addedFile.setError,
     reader.onload = () => {
-      console.log('foo', file);
       addedFile.setContent(reader.result as string, keys);
     }
     reader.readAsText(file)
   }, [keys, username]);
 
-  const addText = useCallback(async (text: string) => {
+  const addText = useCallback(async (text: string, name: string) => {
     if (!keys) return;
-    const file = add();
+    const file = add(`${name}.txt`);
     file.setContent(text, keys);
   }, [keys, username]);
 

@@ -12,6 +12,7 @@ const config = (api) => {
           'GITHUB_REPOSITORY',
         ],
       }],
+      [require.resolve('react-hot-loader/babel')],
     ],
   };
 };

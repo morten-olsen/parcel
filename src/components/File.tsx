@@ -1,12 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-import { File } from '../contexts/Encryption';
+import {
+  List,
+  Button,
+} from 'antd';
+import {
+  DeleteOutlined,
+  SyncOutlined,
+  IssuesCloseOutlined,
+  LockOutlined,
+} from '@ant-design/icons';
+import { FileType } from '../contexts/Encryption';
 import { CheckCircle, XCircle, Download, Trash, Loader } from 'react-feather';
-import Row, { Cell } from './Row';
 
 interface Props {
   remove: () => void;
-  file: File;
+  file: FileType;
 }
 
 const downloadLink = (name: string, url: string) => {
@@ -18,42 +26,51 @@ const downloadLink = (name: string, url: string) => {
   document.body.removeChild(downloadLink);
 };
 
-const Button = styled.button`
-  background: none;
-  border: none;
-  color: green;
-`;
-
-const icons: {[name: string]: typeof CheckCircle} = {
-  encrypting: Loader,
-  failed: XCircle,
-  encrypted: CheckCircle,
+const icons: {[name: string]: any} = {
+  encrypting: <SyncOutlined spin />,
+  failed: <IssuesCloseOutlined />,
+  encrypted: <LockOutlined />,
 };
+
+const IconText = ({ icon, text, ...props }) => (
+  <Button
+    {...props}
+    icon={React.createElement(icon)}
+  >
+    {text}
+  </Button>
+);
 
 const FileView: React.FC<Props> = ({
   file,
   remove,
 }) => {
-  const Icon = icons[file.status];
+  const icon = icons[file.status];
 
   return (
-    <Row
-      left={(
-        <Cell><Icon /></Cell>
-      )}
-      title={file.name}
-      body={`encrypted for ${file.reciever}`}
-      right={!!file.link && (
-        <>
-          <Cell>
-            <Button onClick={() => downloadLink(file.name, file.link)}><Download /></Button>
-          </Cell>
-          <Cell>
-            <Button onClick={remove}><Trash /></Button>
-          </Cell>
-        </>
-      )}
-    />
+    <List.Item
+      actions={file.link ? [(
+        <IconText
+          icon={DeleteOutlined}
+          danger
+          text="Delete"
+          onClick={remove}
+        />
+      ), (
+        <IconText
+          icon={DeleteOutlined}
+          type="primary"
+          text="Download"
+          onClick={() => downloadLink(file.name, file.link!)}
+        />
+      )]: []}
+    >
+      <List.Item.Meta
+        avatar={icon}
+        title={file.name}
+        description={`Encrypted for ${file.reciever}`}
+      />
+    </List.Item>
   );
 };
 

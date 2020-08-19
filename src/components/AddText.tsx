@@ -1,39 +1,57 @@
 import React, { useState, useCallback, useContext } from 'react';
-import styled from 'styled-components';
+import { Input, Form, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import EncryptionContext from '../contexts/Encryption';
-import { Theme } from '../theme';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
+const layout = {
+  labelCol: { span: 2 },
+};
 
-const Text = styled.textarea<{
-  theme: Theme;
-}>`
-  border: none;
-  height: 200px;
-  background: transparent;
-  color: inherit;
-  padding: ${({ theme }) => theme.margin.medium}px; 
-  font: inherit;
-`;
+const tailLayout = {
+  wrapperCol: { offset: 2 },
+};
 
 const AddText : React.FC = () => {
   const { addText } = useContext(EncryptionContext);
+  const [name, setName] = useState('');
   const [text, setText] = useState('');
 
   const add = useCallback(() => {
-    addText(text);
+    addText(text, name || 'untitled');
     setText('');
+    setName('');
   }, [text, addText]);
 
   return (
-    <Wrapper>
-      <Text placeholder="Enter you message..." value={text} onChange={evt => setText(evt.target.value)} />
-      <button onClick={add}>Save</button>
-    </Wrapper>
+    <Form {...layout}>
+      <Form.Item
+        label="Name"
+      >
+        <Input
+          value={name}
+          onChange={evt => setName(evt.target.value)}
+        />
+      </Form.Item>
+      <Form.Item
+        label="Message"
+      >
+        <Input.TextArea
+          value={text} 
+          rows={10}
+          onChange={evt => setText(evt.target.value)} 
+        />
+      </Form.Item>
+      <Form.Item {...tailLayout}>
+        <Button
+          onClick={add}
+          type="primary"
+          icon={<PlusOutlined />}
+          disabled={!text}
+        >
+          Add
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

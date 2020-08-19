@@ -1,10 +1,15 @@
 import React, { useContext, useCallback } from 'react';
 import styled from 'styled-components';
+import { Layout } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import { useDropzone } from 'react-dropzone';
 import EncryptionContext from '../contexts/Encryption';
-import { Upload } from 'react-feather';
 
-const DropWrapper = styled.div`
+const Icon = styled(UploadOutlined)`
+  font-size: 100px;
+`;
+
+const DropWrapper = styled(Layout)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,13 +24,11 @@ const AddFile: React.FC = () => {
   }, [])
   const {getRootProps, getInputProps} = useDropzone({ onDrop });
   return (
-    <div>
     <DropWrapper {...getRootProps()}>
       <input {...getInputProps()} />
-      <Upload size={200} />
+      <Icon />
       <p>Drag 'n' drop some files here, or click to select files</p>
     </DropWrapper>
-    </div>
   );
 };
 

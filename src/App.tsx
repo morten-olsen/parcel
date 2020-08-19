@@ -1,19 +1,20 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import { hot } from 'react-hot-loader/root';
+import { Layout } from 'antd';
 import { GithubProvider } from './contexts/Github';
 import { EncryptionProvider } from './contexts/Encryption';
-import Encrypt from './screens/Encrypt';
-import theme from './theme';
+import AppRouter from './Router';
 
 const App: React.FC = () => (
-  <ThemeProvider theme={theme}>
-    <GithubProvider username="morten-olsen">
-      <div>Test</div>
-      <EncryptionProvider>
-        <Encrypt />
-      </EncryptionProvider>
-    </GithubProvider>
-  </ThemeProvider>
+  <GithubProvider username="morten-olsen">
+    <EncryptionProvider>
+      <Layout>
+        <Layout.Content style={{ padding: '25px' }}>
+          <AppRouter/>
+        </Layout.Content>
+      </Layout>
+    </EncryptionProvider>
+  </GithubProvider>
 );
 
-export default App;
+export default hot(App);

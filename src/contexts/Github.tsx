@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
+import { Layout, Spin } from 'antd';
 
 interface GithubContextType {
   username: string;
@@ -12,6 +13,20 @@ interface Props {
   username: string;
   children: React.ReactNode;
 }
+
+const Loader = () => (
+  <Layout
+    style={{
+      position: 'fixed',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%',
+      width: '100%',
+    }}
+  >
+    <Spin size="large" />
+  </Layout>
+);
 
 const GithubContext = createContext<GithubContextType>({
   username: 'unknown',
@@ -45,6 +60,10 @@ const GithubProvider: React.FC<Props> = ({
 
     run();
   }, [username]);
+
+  if (state === 'loading') {
+    return <Loader />;
+  }
 
   return (
     <GithubContext.Provider

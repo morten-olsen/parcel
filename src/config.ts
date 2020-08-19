@@ -10,6 +10,10 @@ class Config {
     const [user] = this.repo.split('/');
     return user;
   }
+
+  get isProd() {
+    return process.env.NODE_ENV === 'production';
+  }
 }
 
 export default new Config();
