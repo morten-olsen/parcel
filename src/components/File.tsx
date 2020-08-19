@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   List,
   Button,
@@ -8,16 +8,18 @@ import {
   SyncOutlined,
   IssuesCloseOutlined,
   LockOutlined,
+  DownloadOutlined,
+  ShareAltOutlined,
 } from '@ant-design/icons';
 import { FileType } from '../contexts/Encryption';
-import { CheckCircle, XCircle, Download, Trash, Loader } from 'react-feather';
 
 interface Props {
   remove: () => void;
   file: FileType;
 }
 
-const downloadLink = (name: string, url: string) => {
+const downloadLink = (name: string, blob: Blob) => {
+  const url = URL.createObjectURL(blob);
   const downloadLink = document.createElement('a');
   downloadLink.href = url;
   downloadLink.download = name;
@@ -31,6 +33,17 @@ const icons: {[name: string]: any} = {
   failed: <IssuesCloseOutlined />,
   encrypted: <LockOutlined />,
 };
+
+const share = async (file: FileType, fileData: File[]) => {
+  try {
+    navigator.share({
+      title: file.name,
+      files: fileData,
+    } as any);
+  } catch (err) {
+    alert(err);
+  }
+}
 
 const IconText = ({ icon, text, ...props }) => (
   <Button
@@ -46,24 +59,47 @@ const FileView: React.FC<Props> = ({
   remove,
 }) => {
   const icon = icons[file.status];
+  const fileData = useMemo(() => [new File([file.link || ''], file.name, {
+    type: 'text/plain',
+  })], [file]);
+
+  const actions = [];
+
+  if (file.link) {
+    actions.push(
+      <IconText
+        icon={DeleteOutlined}
+        danger
+        text="Delete"
+        onClick={remove}
+      />
+    );
+  }
+
+  if (!!navigator.share && (navigator as any).canSare && (navigator as any).canShare({ files: fileData })) {
+    actions.push(
+      <IconText
+        icon={ShareAltOutlined}
+        text="Share"
+        onClick={() => share(file, fileData)}
+      />
+    );
+  }
+
+  if (file.link) {
+    actions.push(
+      <IconText
+        icon={DownloadOutlined}
+        type="primary"
+        text="Download"
+        onClick={() => downloadLink(file.name, file.link!)}
+      />
+    );
+  }
 
   return (
     <List.Item
-      actions={file.link ? [(
-        <IconText
-          icon={DeleteOutlined}
-          danger
-          text="Delete"
-          onClick={remove}
-        />
-      ), (
-        <IconText
-          icon={DeleteOutlined}
-          type="primary"
-          text="Download"
-          onClick={() => downloadLink(file.name, file.link!)}
-        />
-      )]: []}
+      actions={actions}
     >
       <List.Item.Meta
         avatar={icon}

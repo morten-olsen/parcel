@@ -33,6 +33,10 @@ const GithubContext = createContext<GithubContextType>({
   state: 'failed',
 });
 
+const headers = {
+  authorization: "token 22924bb3da8465e7e8575740f2fc0a4971c908db",
+};
+
 const GithubProvider: React.FC<Props> = ({
   username,
   children,
@@ -45,8 +49,8 @@ const GithubProvider: React.FC<Props> = ({
   useEffect(() => {
     const run = async () => {
       try {
-        const keysRes = await fetch(`https://api.github.com/users/${username}/gpg_keys`);
-        const userRes = await fetch(`https://api.github.com/users/${username}`);
+        const keysRes = await fetch(`https://api.github.com/users/${username}/gpg_keys`, { headers });
+        const userRes = await fetch(`https://api.github.com/users/${username}`, { headers });
         const keys = await keysRes.json();
         const user = await userRes.json();
         setState('ready');

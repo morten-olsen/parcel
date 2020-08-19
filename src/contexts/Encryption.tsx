@@ -9,7 +9,7 @@ export interface FileType {
   reciever: string;
   status: 'encrypting' | 'failed' | 'encrypted';
   error?: any;
-  link?: string;
+  link?: Blob;
 }
 
 interface EncryptionContextType {
@@ -39,8 +39,8 @@ const encrypt = async (keys: string[], content: string) => {
   const blob = new Blob([data], {
     type: 'text/text',
   });
-  const url = URL.createObjectURL(blob);
-  return url;
+  //const url = URL.createObjectURL(blob);
+  return blob;
 };
 
 const EncryptionProvider: React.FC = ({
