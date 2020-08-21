@@ -9,7 +9,7 @@ const App: React.FC = () => (
   <GithubProvider username="morten-olsen">
     <EncryptionProvider>
       <Layout style={{minHeight:"100vh"}}>
-        <Layout.Content style={{ padding: '25px', flex: 1 }}>
+        <Layout.Content style={{ padding: '25px', maxWidth: '800px', width: '100%', margin: 'auto' }}>
           <AppRouter/>
         </Layout.Content>
       </Layout>
