@@ -8,8 +8,8 @@ import AppRouter from './Router';
 const App: React.FC = () => (
   <GithubProvider username="morten-olsen">
     <EncryptionProvider>
-      <Layout>
-        <Layout.Content style={{ padding: '25px' }}>
+      <Layout style={{minHeight:"100vh"}}>
+        <Layout.Content style={{ padding: '25px', flex: 1 }}>
           <AppRouter/>
         </Layout.Content>
       </Layout>

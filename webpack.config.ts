@@ -1,12 +1,14 @@
-import webpack, { Configuration } from 'webpack';
+import { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 
+const __DEV__ = process.env.NODE_ENV !== 'production';
+
 const config: Configuration = {
-  mode: 'development',
+  mode: __DEV__ ? 'development' : 'production',
   entry: {
     app: [
-      'react-hot-loader/patch',
+      ...(__DEV__ ? ['react-hot-loader/patch'] : []),
       path.join(__dirname, 'src', 'index.tsx'),
     ],
   },
@@ -20,7 +22,10 @@ const config: Configuration = {
     },
   },
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Parcel',
+      minify: true,
+    }),
   ],
   module: {
     rules: [{

@@ -2,6 +2,8 @@ import React, {useMemo} from 'react';
 import {
   List,
   Button,
+  Tooltip,
+  Popconfirm,
 } from 'antd';
 import {
   DeleteOutlined,
@@ -46,12 +48,12 @@ const share = async (file: FileType, fileData: File[]) => {
 }
 
 const IconText = ({ icon, text, ...props }) => (
-  <Button
-    {...props}
-    icon={React.createElement(icon)}
-  >
-    {text}
-  </Button>
+  <Tooltip title={text}>
+    <Button
+      {...props}
+      icon={React.createElement(icon)}
+    />
+  </Tooltip>
 );
 
 const FileView: React.FC<Props> = ({
@@ -67,12 +69,18 @@ const FileView: React.FC<Props> = ({
 
   if (file.link) {
     actions.push(
-      <IconText
-        icon={DeleteOutlined}
-        danger
-        text="Delete"
-        onClick={remove}
-      />
+      <Popconfirm
+        title="Are you sure delete this file?"
+        onConfirm={remove}
+        okText="Yes"
+        cancelText="No"
+      >
+        <IconText
+          icon={DeleteOutlined}
+          danger
+          text="Delete"
+        />
+      </Popconfirm>
     );
   }
 

@@ -58,7 +58,6 @@ const EncryptionProvider: React.FC = ({
 
   const add = (name: string) => {
     const id = nanoid();
-    message.info(`Beginning to encrypt ${name}`);
     const file: FileType = {
       name: `${name}.asc`,
       reciever: username,

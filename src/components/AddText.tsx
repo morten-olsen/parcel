@@ -3,14 +3,6 @@ import { Input, Form, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import EncryptionContext from '../contexts/Encryption';
 
-const layout = {
-  labelCol: { span: 2 },
-};
-
-const tailLayout = {
-  wrapperCol: { offset: 2 },
-};
-
 const AddText : React.FC = () => {
   const { addText } = useContext(EncryptionContext);
   const [name, setName] = useState('');
@@ -23,25 +15,23 @@ const AddText : React.FC = () => {
   }, [text, addText]);
 
   return (
-    <Form {...layout}>
-      <Form.Item
-        label="Name"
-      >
+    <Form>
+      <Form.Item>
         <Input
+          placeholder="Title"
           value={name}
           onChange={evt => setName(evt.target.value)}
         />
       </Form.Item>
-      <Form.Item
-        label="Message"
-      >
+      <Form.Item>
         <Input.TextArea
+          placeholder="Your message here..."
           value={text} 
-          rows={10}
+          rows={6}
           onChange={evt => setText(evt.target.value)} 
         />
       </Form.Item>
-      <Form.Item {...tailLayout}>
+      <Form.Item>
         <Button
           onClick={add}
           type="primary"

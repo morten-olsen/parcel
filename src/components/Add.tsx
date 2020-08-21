@@ -1,46 +1,22 @@
-import React, { Fragment, useState } from 'react';
-import { Menu, Dropdown, Form } from 'antd';
-import { DownOutlined, FileOutlined, FileTextOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Radio, Divider } from 'antd';
+import { FileOutlined, FileTextOutlined } from '@ant-design/icons';
 import AddText from './AddText';
 import AddFile from './AddFile';
 
-const layout = {
-  labelCol: { span: 2 },
-};
+const DEFAULT_VALUE = 'text';
 
 const Add: React.FC = () => {
-  const [type, setType] = useState<'file' | 'text'>('text');
-
-  const menu = (
-    <Menu>
-      <Menu.Item
-        onClick={() => setType('file')}
-        active={type === 'file'}
-        icon={<FileOutlined />}
-      >
-        File
-      </Menu.Item>
-      <Menu.Item
-        onClick={() => setType('text')}
-        active={type === 'text'}
-        icon={<FileTextOutlined />}
-      >
-        Text
-      </Menu.Item>
-    </Menu>
-  );
+  const [type, setType] = useState<'file' | 'text'>(DEFAULT_VALUE);
 
   return (
     <>
-      <Form {...layout}>
-        <Form.Item
-          label="I want to encrypt a"
-        >
-          <Dropdown overlay={menu}>
-            <a>{type} <DownOutlined /></a>
-          </Dropdown>
-      </Form.Item>
-      </Form>
+      <Divider>
+        <Radio.Group onChange={evt => setType(evt.target.value)} defaultValue={DEFAULT_VALUE}>
+          <Radio.Button value="text"><FileTextOutlined /> Text</Radio.Button>
+          <Radio.Button value="file"><FileOutlined /> File</Radio.Button>
+        </Radio.Group>
+      </Divider>
       {type === 'text' && <AddText />}
       {type === 'file' && <AddFile />}
     </>

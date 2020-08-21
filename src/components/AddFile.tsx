@@ -1,12 +1,13 @@
 import React, { useContext, useCallback } from 'react';
 import styled from 'styled-components';
 import { Layout } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { FileAddTwoTone } from '@ant-design/icons';
 import { useDropzone } from 'react-dropzone';
 import EncryptionContext from '../contexts/Encryption';
 
-const Icon = styled(UploadOutlined)`
+const Icon = styled(FileAddTwoTone)`
   font-size: 100px;
+  margin-bottom: 20px;
 `;
 
 const DropWrapper = styled(Layout)`

@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Encrypt from './screens/Encrypt';
+import Welcome from './screens/Welcome';
 import Debug from './screens/Debug';
 
 const AppRouter: React.FC = () => (
@@ -13,6 +14,9 @@ const AppRouter: React.FC = () => (
     <Switch>
       <Route path="/debug">
         <Debug />
+      </Route>
+      <Route path="/welcome">
+        <Welcome />
       </Route>
       <Route path="/">
         <Encrypt />
