@@ -1,5 +1,5 @@
 import React, { useContext, useState, useCallback } from 'react';
-import { Space, Typography, Input, Button, Form } from 'antd';
+import { Popconfirm, Space, Typography, Input, Button, Form } from 'antd';
 import DecryptionContext from '../contexts/Decryption';
 import { downloadLink } from '../helpers/files';
 import {
@@ -12,6 +12,7 @@ import {
 const SetupKey: React.FC = () => {
   const {
     createKey,
+    deleteKey,
     publicKey,
   } = useContext(DecryptionContext);
 
@@ -86,15 +87,28 @@ const SetupKey: React.FC = () => {
         <p>
           Remember that you need to go to this website on this device to decrypt the files after receiving them
         </p>
-        
-        <Button
-          onClick={downloadPublicKey}
-          type="primary"
-          size="large"
-          shape="round"
-        >
-          Download sharing key
-        </Button>
+        <Space direction="vertical" size="large"> 
+          <Button
+            onClick={downloadPublicKey}
+            type="primary"
+            size="large"
+            shape="round"
+          >
+            Download sharing key
+          </Button>
+          <Popconfirm
+          title="Are you sure?"
+            onConfirm={deleteKey}
+          >
+            <Button
+              danger
+              size="small"
+              type="link"
+            >
+              Delete sharing key
+            </Button>
+          </Popconfirm>
+        </Space>
       </div>
     );
   }

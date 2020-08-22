@@ -8,6 +8,7 @@ interface DecryptionContextType {
   publicKey: string | undefined;
   privateKey: string | undefined;
   createKey: (name: string, email: string) => void;
+  deleteKey: () => void;
   files: {[id: string]: FileType};
   addFile: (file: File) => Promise<void>;
   deleteFile: (id: string) => void;
@@ -24,6 +25,7 @@ const DecryptionContext = createContext<DecryptionContextType>({
   privateKey: undefined,
   files: {},
   createKey: async () => { throw new Error('Not using provider'); },
+  deleteKey: async () => { throw new Error('Not using provider'); },
   addFile: async () => { throw new Error('Not using provider'); },
   deleteFile: async () => { throw new Error('Not using provider'); },
 });
@@ -71,6 +73,12 @@ const DecryptionProvider: React.FC = ({
     run();
   }, []);
 
+  const deleteKey = () => {
+    setPublicKey(undefined);
+    setPrivateKey(undefined);
+    localStorage.removeItem('key');
+  };
+
   const createKey = async () => {
     const key = await openpgp.generateKey({
       userIds: [{ name: 'unknown unknown', email: 'unknown@unknown.foo'}],
@@ -103,6 +111,7 @@ const DecryptionProvider: React.FC = ({
         publicKey,
         privateKey,
         createKey,
+        deleteKey,
         files,
         addFile,
         deleteFile,
