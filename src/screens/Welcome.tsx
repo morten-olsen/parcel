@@ -22,10 +22,10 @@ const Welcome: React.FC = () => {
         <EyeInvisibleTwoTone style={{ fontSize: 200 }} />
         <Typography.Title level={1}>Protect before sending</Typography.Title>
         <p>
-        The internet can seem like a scary place, especially if you want to send sensitiv information across it.
+          The internet can seem like a scary place, especially if you want to send sensitiv information across it.
         </p>
         <p>
-            The truth is that a lot of systems, including e-mails, was not build for the internet that we have today.
+          The truth is that a lot of systems, including e-mails, was not build for the internet that we have today.
         </p>
         <p>
           This is why it is so important to make sure your documents are well protected before sharing.

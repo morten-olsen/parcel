@@ -20,11 +20,13 @@
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
+    "@types/webpack-subresource-integrity": "^1.2.0",
     "antd": "^4.5.4",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "css-loader": "^4.2.1",
     "html-webpack-plugin": "^4.3.0",
+    "offline-plugin": "^5.0.7",
     "parcel-bundler": "^1.12.4",
     "react-hot-loader": "^4.12.21",
     "style-loader": "^1.2.1",
@@ -32,7 +34,8 @@
     "typescript": "^3.9.7",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-subresource-integrity": "^1.4.1"
   },
   "dependencies": {
     "nanoid": "^3.1.12",

@@ -6,7 +6,7 @@ import { EncryptionProvider } from './contexts/Encryption';
 import AppRouter from './Router';
 
 const App: React.FC = () => (
-  <GithubProvider username="morten-olsen">
+  <GithubProvider>
     <EncryptionProvider>
       <Layout style={{minHeight:"100vh"}}>
         <Layout.Content style={{ padding: '25px', maxWidth: '800px', width: '100%', margin: 'auto' }}>
