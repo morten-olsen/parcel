@@ -18,8 +18,7 @@ const AppRouter: React.FC = () => {
   const history = useHistory();
   return (
     <>
-      <Layout style={{ textAlign: 'center' }}>
-        <Space>
+      <Space>
         <Button
           onClick={() => history.push('/')}
           icon={<HomeFilled />}
@@ -27,7 +26,6 @@ const AppRouter: React.FC = () => {
           Home
         </Button>
       </Space>
-      </Layout>
       <Layout.Content style={{ padding: '25px', maxWidth: '800px', width: '100%', margin: 'auto' }}>
         <Switch>
           <Route path="/debug">
