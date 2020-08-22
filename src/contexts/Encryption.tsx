@@ -20,7 +20,6 @@ const EncryptionContext = createContext<EncryptionContextType>({
 
 const encrypt = async (keys: string[], content: string) => {
   const armoredKeys = await Promise.all(keys.map(openpgp.key.readArmored));
-  console.log(armoredKeys);
   const message = openpgp.message.fromText(content);
   const encrypted = await openpgp.encrypt({
     message,

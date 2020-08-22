@@ -6,14 +6,22 @@ import { createFile } from '../helpers/files';
 
 interface DecryptionContextType {
   publicKey: string | undefined;
+  privateKey: string | undefined;
   createKey: (name: string, email: string) => void;
   files: {[id: string]: FileType};
   addFile: (file: File) => Promise<void>;
   deleteFile: (id: string) => void;
 }
 
+const removeExtension = (name: string) => {
+  const parts = name.split('.');
+  parts.pop();
+  return parts.join('.');
+};
+
 const DecryptionContext = createContext<DecryptionContextType>({
   publicKey: undefined,
+  privateKey: undefined,
   files: {},
   createKey: async () => { throw new Error('Not using provider'); },
   addFile: async () => { throw new Error('Not using provider'); },
@@ -22,7 +30,7 @@ const DecryptionContext = createContext<DecryptionContextType>({
 
 const decrypt = async (privateKey: string, keys: string[], content: string) => {
   const armoredKeys = await Promise.all(keys.map(openpgp.key.readArmored));
-  const message = openpgp.message.fromBinary(content);
+  const message = await openpgp.message.readArmored(content);
   const encrypted = await openpgp.decrypt({
     message,
     privateKeys: [...(await openpgp.key.readArmored(privateKey)).keys],
@@ -38,7 +46,7 @@ const decrypt = async (privateKey: string, keys: string[], content: string) => {
 const DecryptionProvider: React.FC = ({
   children,
 }) => {
-  const { username, keys } = useContext(GithubContext);
+  const { keys } = useContext(GithubContext);
   const [privateKey, setPrivateKey] = useState<string | undefined>(undefined);
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
   const [files, setFiles] = useState<DecryptionContextType['files']>({});
@@ -76,24 +84,24 @@ const DecryptionProvider: React.FC = ({
 
   const addFile = useCallback(async (file: File) => {
     if (!keys || !privateKey) return;
-    const addedFile = createFile(setFiles, file.name);
+    const addedFile = createFile(setFiles, removeExtension(file.name));
     const reader = new FileReader()
 
     reader.onabort = addedFile.setFailed,
     reader.onerror = addedFile.setFailed,
     reader.onload = () => {
-      console.log('read');
       addedFile.setContent(
         decrypt(privateKey, keys, reader.result as string),
       );
     }
-    reader.readAsBinaryString(file);
-  }, [keys, username]);
+    reader.readAsText(file);
+  }, [keys, privateKey]);
 
   return (
     <DecryptionContext.Provider
       value={{
         publicKey,
+        privateKey,
         createKey,
         files,
         addFile,

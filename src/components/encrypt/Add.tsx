@@ -4,7 +4,7 @@ import { FileOutlined, FileTextOutlined } from '@ant-design/icons';
 import AddText from './AddText';
 import AddFile from './AddFile';
 
-const DEFAULT_VALUE = 'text';
+const DEFAULT_VALUE = 'file';
 
 const Add: React.FC = () => {
   const [type, setType] = useState<'file' | 'text'>(DEFAULT_VALUE);

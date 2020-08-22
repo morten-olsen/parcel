@@ -22,7 +22,7 @@ const AddFile: React.FC = () => {
   const { addFile } = useContext(DecryptionContext);
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach(addFile);
-  }, [])
+  }, [addFile])
   const {getRootProps, getInputProps} = useDropzone({ onDrop });
   return (
     <DropWrapper {...getRootProps()}>
