@@ -28,6 +28,9 @@ const config: Configuration = {
     },
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(__DEV__),
+    }),
     new WebpackPwaManifest({
       name: `Parcel for ${data.username}`,
       short_name: 'parcel',

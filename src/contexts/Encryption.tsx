@@ -39,7 +39,6 @@ const encrypt = async (keys: string[], content: string) => {
   const blob = new Blob([data], {
     type: 'text/text',
   });
-  //const url = URL.createObjectURL(blob);
   return blob;
 };
 
