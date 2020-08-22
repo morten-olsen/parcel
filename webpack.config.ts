@@ -1,4 +1,4 @@
-import { Configuration } from 'webpack';
+import webpack, { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
 import path from 'path';
@@ -46,9 +46,9 @@ const config: Configuration = {
       minify: true,
       template: path.join(__dirname, 'html.html'),
     }),
-    new OfflinePlugin({
+    ...(__DEV__ ? [] : [new OfflinePlugin({
       events: true,
-    }),
+    })]),
   ],
   module: {
     rules: [{
