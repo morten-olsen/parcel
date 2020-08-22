@@ -1,7 +1,6 @@
 import webpack, { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
-import SriPlugin from 'webpack-subresource-integrity';
 import path from 'path';
 
 const data = require('./data.json');
@@ -29,10 +28,6 @@ const config: Configuration = {
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(__DEV__),
-    }),
-    new SriPlugin({
-      hashFuncNames: ['sha256', 'sha384'],
-      enabled: !__DEV__,
     }),
     new HtmlWebpackPlugin({
       title: `Parcel for ${data.username}`,
