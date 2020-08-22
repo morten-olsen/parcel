@@ -19,9 +19,11 @@ const SetupKey: React.FC = () => {
   const [email, setEmail] = useState('');
 
   const downloadPublicKey = useCallback(() => {
-    const publicKeyBlob = new Blob([publicKey!]);
+    const publicKeyBlob = new Blob([publicKey + ''], {
+      type: 'text/text',
+    });
     downloadLink('public-key.asc', publicKeyBlob);
-  }, []);
+  }, [publicKey]);
 
   const setupKey = useCallback(() => {
     createKey(name, email);

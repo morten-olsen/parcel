@@ -41,6 +41,7 @@ export const createFile = (setFiles: SetFilesType, name: string) => {
   }
 
   const setFailed = (err: any) => {
+    console.error(err);
     setFiles((files) => ({
       ...files,
       [id]: {

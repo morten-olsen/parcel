@@ -22,7 +22,7 @@ const DecryptionContext = createContext<DecryptionContextType>({
 
 const decrypt = async (privateKey: string, keys: string[], content: string) => {
   const armoredKeys = await Promise.all(keys.map(openpgp.key.readArmored));
-  const message = openpgp.message.fromText(content);
+  const message = openpgp.message.fromBinary(content);
   const encrypted = await openpgp.decrypt({
     message,
     privateKeys: [...(await openpgp.key.readArmored(privateKey)).keys],
@@ -82,11 +82,12 @@ const DecryptionProvider: React.FC = ({
     reader.onabort = addedFile.setFailed,
     reader.onerror = addedFile.setFailed,
     reader.onload = () => {
+      console.log('read');
       addedFile.setContent(
         decrypt(privateKey, keys, reader.result as string),
       );
     }
-    reader.readAsText(file)
+    reader.readAsBinaryString(file);
   }, [keys, username]);
 
   return (

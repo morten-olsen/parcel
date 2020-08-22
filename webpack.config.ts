@@ -1,11 +1,10 @@
 import webpack, { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
 import path from 'path';
-import WebpackPwaManifest from 'webpack-pwa-manifest';
 
 const data = require('./data.json');
-const OfflinePlugin = require('offline-plugin');
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
@@ -31,12 +30,6 @@ const config: Configuration = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(__DEV__),
     }),
-    new WebpackPwaManifest({
-      name: `Parcel for ${data.username}`,
-      short_name: 'parcel',
-      background_color: '#ffffff',
-      crossorigin: 'anonymous',
-    }),
     new SriPlugin({
       hashFuncNames: ['sha256', 'sha384'],
       enabled: !__DEV__,
@@ -46,9 +39,11 @@ const config: Configuration = {
       minify: true,
       template: path.join(__dirname, 'html.html'),
     }),
-    ...(__DEV__ ? [] : [new OfflinePlugin({
-      events: true,
-    })]),
+    new WorkboxWebpackPlugin.GenerateSW({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
   ],
   module: {
     rules: [{
