@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 import { FileAddTwoTone } from '@ant-design/icons';
 import { useDropzone } from 'react-dropzone';
-import EncryptionContext from '../contexts/Encryption';
+import EncryptionContext from '../../contexts/Encryption';
 
 const Icon = styled(FileAddTwoTone)`
   font-size: 100px;

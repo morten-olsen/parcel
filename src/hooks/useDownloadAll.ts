@@ -8,14 +8,14 @@ type Statuses = 'packing' | 'ready';
 const useDownloadAll = () => {
   const [status, setStatus] = useState<Statuses>('ready');
   const { files } = useContext(EncryptionContext);
-  const allFilesReady = Object.values(files).filter(f => f.link).length > 1;
+  const allFilesReady = Object.values(files).filter(f => f.status === 'success').length > 1;
 
   const downloadAll = useCallback(() => {
     setStatus('packing');
     const run = async () => {
       const zip = new Zip();
       Object.values(files).map((file) => {
-        zip.file(file.name, file.link!);
+        zip.file(file.name, file.blob!);
       });
       const link = await zip.generateAsync({ type: 'blob' });
       setStatus('ready');

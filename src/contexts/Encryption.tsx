@@ -1,16 +1,8 @@
 import React, { useState, useCallback, useContext, createContext } from 'react';
 import * as openpgp from 'openpgp';
-import { nanoid } from 'nanoid';
-import { message } from 'antd';
 import GithubContext from './Github';
-
-export interface FileType {
-  name: string;
-  reciever: string;
-  status: 'encrypting' | 'failed' | 'encrypted';
-  error?: any;
-  link?: Blob;
-}
+import { createFile } from '../helpers/files';
+import FileType from '../types/File';
 
 interface EncryptionContextType {
   files: {[id: string]: FileType};
@@ -55,74 +47,27 @@ const EncryptionProvider: React.FC = ({
     });
   }, [files]);
 
-  const add = (name: string) => {
-    const id = nanoid();
-    const file: FileType = {
-      name: `${name}.asc`,
-      reciever: username,
-      status: 'encrypting',
-    };
-    setFiles(files => ({
-      ...files,
-      [id]: file,
-    }));
-
-    const setError = (err: any) => {
-      console.error(err);
-      setFiles(files => ({
-        ...files,
-        [id]: {
-          ...files[id],
-          status: 'failed',
-          error: err,
-        },
-      }));
-      message.error(`Failed to encrypt ${name}`);
-    };
-
-    const setContent = (text: string, keys: string[]) => {
-      const run = async () => {
-        try {
-          const encrypted = await encrypt(keys, text);
-          setFiles(files => ({
-            ...files,
-            [id]: {
-              ...files[id],
-              link: encrypted,
-              status: 'encrypted'
-            },
-          }));
-          message.success(`Done encrypting ${name}`);
-        } catch (err) {
-          setError(err);
-        }
-      };
-      run();
-    };
-
-    return {
-      setContent,
-      setError,
-    };
-  }
-
   const addFile = useCallback(async (file: File) => {
     if (!keys) return;
-    const addedFile = add(file.name);
+    const addedFile = createFile(setFiles, `${file.name}.acs`);
     const reader = new FileReader()
 
-    reader.onabort = addedFile.setError,
-    reader.onerror = addedFile.setError,
+    reader.onabort = addedFile.setFailed,
+    reader.onerror = addedFile.setFailed,
     reader.onload = () => {
-      addedFile.setContent(reader.result as string, keys);
+      addedFile.setContent(
+        encrypt(keys, reader.result as string),
+      );
     }
     reader.readAsText(file)
   }, [keys, username]);
 
   const addText = useCallback(async (text: string, name: string) => {
     if (!keys) return;
-    const file = add(`${name}.txt`);
-    file.setContent(text, keys);
+    const file = createFile(setFiles, `${name}.txt.asc`);
+    file.setContent(
+      encrypt(keys, text),
+    );
   }, [keys, username]);
 
   return (

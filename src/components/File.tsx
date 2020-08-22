@@ -1,8 +1,7 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {
   List,
   Button,
-  Tooltip,
   Popconfirm,
 } from 'antd';
 import {
@@ -11,9 +10,8 @@ import {
   IssuesCloseOutlined,
   LockOutlined,
   DownloadOutlined,
-  ShareAltOutlined,
 } from '@ant-design/icons';
-import { FileType } from '../contexts/Encryption';
+import FileType from '../types/File';
 import { downloadLink } from '../helpers/files';
 
 interface Props {
@@ -22,21 +20,10 @@ interface Props {
 }
 
 const icons: {[name: string]: any} = {
-  encrypting: <SyncOutlined spin />,
+  processing: <SyncOutlined spin />,
   failed: <IssuesCloseOutlined />,
-  encrypted: <LockOutlined />,
+  success: <LockOutlined />,
 };
-
-const share = async (file: FileType, fileData: File[]) => {
-  try {
-    navigator.share({
-      title: file.name,
-      files: fileData,
-    } as any);
-  } catch (err) {
-    alert(err);
-  }
-}
 
 const IconText = ({ icon, text, ...props }) => (
   <Button
@@ -50,13 +37,9 @@ const FileView: React.FC<Props> = ({
   remove,
 }) => {
   const icon = icons[file.status];
-  const fileData = useMemo(() => [new File([file.link || ''], file.name, {
-    type: 'text/plain',
-  })], [file]);
-
   const actions = [];
 
-  if (file.link) {
+  if (file.blob) {
     actions.push(
       <Popconfirm
         title="Are you sure delete this file?"
@@ -73,23 +56,13 @@ const FileView: React.FC<Props> = ({
     );
   }
 
-  if (!!navigator.share && (navigator as any).canSare && (navigator as any).canShare({ files: fileData })) {
-    actions.push(
-      <IconText
-        icon={ShareAltOutlined}
-        text="Share"
-        onClick={() => share(file, fileData)}
-      />
-    );
-  }
-
-  if (file.link) {
+  if (file.blob) {
     actions.push(
       <IconText
         icon={DownloadOutlined}
         type="primary"
         text="Download"
-        onClick={() => downloadLink(file.name, file.link!)}
+        onClick={() => downloadLink(file.name, file.blob!)}
       />
     );
   }
@@ -101,7 +74,6 @@ const FileView: React.FC<Props> = ({
       <List.Item.Meta
         avatar={icon}
         title={file.name}
-        description={`Encrypted for ${file.reciever}`}
       />
     </List.Item>
   );

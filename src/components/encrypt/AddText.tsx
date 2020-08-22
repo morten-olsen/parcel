@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { Input, Form, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import EncryptionContext from '../contexts/Encryption';
+import EncryptionContext from '../../contexts/Encryption';
 
 const AddText : React.FC = () => {
   const { addText } = useContext(EncryptionContext);
