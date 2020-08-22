@@ -1,25 +1,26 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import { Layout, Menu } from 'antd';
+import { Layout } from 'antd';
+import { HashRouter as Router } from 'react-router-dom';
 import { GithubProvider } from './contexts/Github';
 import { EncryptionProvider } from './contexts/Encryption';
 import { DecryptionProvider } from './contexts/Decryption';
 import AppRouter from './Router';
 
-const App: React.FC = () => (
-  <GithubProvider>
-    <EncryptionProvider>
-      <DecryptionProvider>
-        <Layout style={{minHeight:"100vh"}}>
-          <Layout.Header>
-          </Layout.Header>
-          <Layout.Content style={{ padding: '25px', maxWidth: '800px', width: '100%', margin: 'auto' }}>
-            <AppRouter/>
-          </Layout.Content>
-        </Layout>
-      </DecryptionProvider>
-    </EncryptionProvider>
-  </GithubProvider>
-);
+const App: React.FC = () => {
+  return (
+    <GithubProvider>
+      <EncryptionProvider>
+        <DecryptionProvider>
+          <Layout style={{minHeight:"100vh"}}>
+            <Router>
+              <AppRouter/>
+            </Router>
+          </Layout>
+        </DecryptionProvider>
+      </EncryptionProvider>
+    </GithubProvider>
+  );
+};
 
 export default hot(App);

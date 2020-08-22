@@ -21,9 +21,8 @@ const Thumb: React.FC = ({
   return (
     <Button
       size="large"
-      shape="round"
-      type="link"
       icon={<Icon />}
+      type="link"
       onClick={() => history.push(link)}
     >
       {title}
