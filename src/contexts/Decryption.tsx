@@ -6,6 +6,7 @@ import { createFile } from '../helpers/files';
 
 interface DecryptionContextType {
   publicKey: string | undefined;
+  createKey: (name: string, email: string) => void;
   files: {[id: string]: FileType};
   addFile: (file: File) => Promise<void>;
   deleteFile: (id: string) => void;
@@ -14,6 +15,7 @@ interface DecryptionContextType {
 const DecryptionContext = createContext<DecryptionContextType>({
   publicKey: undefined,
   files: {},
+  createKey: async () => { throw new Error('Not using provider'); },
   addFile: async () => { throw new Error('Not using provider'); },
   deleteFile: async () => { throw new Error('Not using provider'); },
 });
@@ -55,20 +57,22 @@ const DecryptionProvider: React.FC = ({
         setPrivateKey(currentRawKey);
         const key = await openpgp.key.readArmored(currentRawKey);
         setPublicKey(key.keys[0].toPublic().armor());
-      } else {
-        const key = await openpgp.generateKey({
-          userIds: [{ name: 'unknown unknown', email: 'unknown@unknown.foo'}],
-          curve: 'ed25519',
-        });
-
-        setPrivateKey(key.privateKeyArmored);
-        setPublicKey(key.publicKeyArmored);
-        localStorage.setItem('key', key.privateKeyArmored);
       }
     };
 
     run();
   }, []);
+
+  const createKey = async () => {
+    const key = await openpgp.generateKey({
+      userIds: [{ name: 'unknown unknown', email: 'unknown@unknown.foo'}],
+      curve: 'ed25519',
+    });
+
+    setPrivateKey(key.privateKeyArmored);
+    setPublicKey(key.publicKeyArmored);
+    localStorage.setItem('key', key.privateKeyArmored);
+  }
 
   const addFile = useCallback(async (file: File) => {
     if (!keys || !privateKey) return;
@@ -89,6 +93,7 @@ const DecryptionProvider: React.FC = ({
     <DecryptionContext.Provider
       value={{
         publicKey,
+        createKey,
         files,
         addFile,
         deleteFile,

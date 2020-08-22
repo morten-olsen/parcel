@@ -19,15 +19,22 @@ interface Props {
   file: FileType;
 }
 
+const iconStyle = {
+  style: {
+    fontSize: 18,
+  },
+};
+
 const icons: {[name: string]: any} = {
-  processing: <SyncOutlined spin />,
-  failed: <IssuesCloseOutlined />,
-  success: <LockOutlined />,
+  processing: <SyncOutlined spin {...iconStyle} />,
+  failed: <IssuesCloseOutlined {...iconStyle} />,
+  success: <LockOutlined {...iconStyle} />,
 };
 
 const IconText = ({ icon, text, ...props }) => (
   <Button
     {...props}
+    shape="round"
     icon={React.createElement(icon)}
   />
 );
