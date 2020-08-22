@@ -39,12 +39,10 @@ const share = async (file: FileType, fileData: File[]) => {
 }
 
 const IconText = ({ icon, text, ...props }) => (
-  <Tooltip title={text}>
-    <Button
-      {...props}
-      icon={React.createElement(icon)}
-    />
-  </Tooltip>
+  <Button
+    {...props}
+    icon={React.createElement(icon)}
+  />
 );
 
 const FileView: React.FC<Props> = ({
