@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 
-const data = require('../../data.json');
+declare var data: any;
 
 interface GithubContextType {
   username: string;
