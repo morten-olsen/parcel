@@ -16,6 +16,7 @@ const Thumb: React.FC = ({
   title,
   Icon,
   link,
+  className,
 }) => {
   const history = useHistory();
   return (
@@ -23,6 +24,7 @@ const Thumb: React.FC = ({
       size="large"
       icon={<Icon />}
       type="link"
+      className={className}
       onClick={() => history.push(link)}
     >
       {title}
@@ -39,15 +41,18 @@ const Intro = () => {
         <Thumb
           title="I want to send a text/file"
           link="/send"
+          className="send-btn"
           Icon={UploadOutlined}
         /> 
         <Thumb
           link="/key"
+          className="want-to-receive-btn"
           title="I want to receive a file"
           Icon={KeyOutlined}
         />
         <Thumb
           link="/receive"
+          className="did-receive-btn"
           title="I have received a file"
           Icon={DownloadOutlined}
         />
