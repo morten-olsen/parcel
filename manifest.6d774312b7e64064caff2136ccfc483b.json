@@ -1,8 +1,0 @@
-{
-  "name": "Parcel for morten-olsen",
-  "short_name": "parcel",
-  "orientation": "portrait",
-  "display": "standalone",
-  "start_url": ".",
-  "background_color": "#ffffff"
-}
