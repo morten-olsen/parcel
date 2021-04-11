@@ -1,9 +1,14 @@
 require('dotenv').config();
 import webpack, { Configuration } from 'webpack';
 import axios from 'axios';
+import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import path from 'path';
+
+interface Options {
+  test: boolean;
+}
 
 const repo = process.env.GITHUB_REPOSITORY;
 if (!repo) {
@@ -13,7 +18,7 @@ const [username] = repo.split('/');
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-const createConfig = async ():Promise<Configuration> => {
+const getData = async () => {
   const { data: keyList } = await axios.get(`https://api.github.com/users/${username}/gpg_keys`);
   if (keyList.length === 0) {
     throw new Error(`The user ${username} does not have any GPG keys`);
@@ -22,6 +27,24 @@ const createConfig = async ():Promise<Configuration> => {
     username,
     keys: keyList.map((key: any) => key.raw_key),
   };
+
+  return data;
+};
+
+const getTestData: typeof getData = async () => {
+  const pubKey = fs.readFileSync(path.join(__dirname, 'test-assets', 'key.pub'), 'utf-8');
+  return {
+    username: 'foobar',
+    keys: [
+      pubKey,
+    ],
+  };
+};
+
+const createConfig = async (options: Options = {
+  test: false,
+}):Promise<Configuration> => {
+  const data = await (options.test ? getTestData() : getData());
   const config: Configuration = {
     mode: __DEV__ ? 'development' : 'production',
     entry: {

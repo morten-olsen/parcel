@@ -19,12 +19,14 @@ const AddText : React.FC = () => {
       <Form.Item>
         <Input
           placeholder="Title (Not encrypted)"
+          className="msg-title"
           value={name}
           onChange={evt => setName(evt.target.value)}
         />
       </Form.Item>
       <Form.Item>
         <Input.TextArea
+          className="msg-body"
           placeholder="Your message here..."
           value={text} 
           rows={6}
@@ -34,6 +36,7 @@ const AddText : React.FC = () => {
       <Form.Item>
         <Button
           onClick={add}
+          className="msg-add"
           type="primary"
           icon={<PlusOutlined />}
           disabled={!text}
