@@ -18,7 +18,7 @@ const AddText : React.FC = () => {
     <Form>
       <Form.Item>
         <Input
-          placeholder="Title"
+          placeholder="Title (Not encrypted)"
           className="msg-title"
           value={name}
           onChange={evt => setName(evt.target.value)}
