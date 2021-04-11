@@ -67,6 +67,7 @@ const FileView: React.FC<Props> = ({
     actions.push(
       <IconText
         icon={DownloadOutlined}
+        className="msg-download"
         type="primary"
         text="Download"
         onClick={() => downloadLink(file.name, file.blob!)}
@@ -77,6 +78,7 @@ const FileView: React.FC<Props> = ({
   return (
     <List.Item
       actions={actions}
+      className="msg-item"
     >
       <List.Item.Meta
         avatar={icon}
