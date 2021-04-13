@@ -27,7 +27,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
     "@types/webpack-subresource-integrity": "^1.2.0",
-    "@types/workbox-webpack-plugin": "^5.1.4",
+    "@types/workbox-webpack-plugin": "^5.1.6",
     "antd": "^4.15.1",
     "axios": "^0.21.1",
     "babel-loader": "^8.1.0",
