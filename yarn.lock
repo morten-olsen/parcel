@@ -2016,14 +2016,14 @@
     "@types/source-list-map" "*"
     source-map "^0.7.3"
 
-"@types/webpack-subresource-integrity@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@types/webpack-subresource-integrity/-/webpack-subresource-integrity-1.2.0.tgz#0051c6b0abec61929889e66964668303528c3525"
-  integrity sha512-J3JTXySjghrFIWs3/iNnSXAQ9aK+jDyy+F2/jfBiWPXhz4ZBm80Vi1t1p2Ef6h0g0c4TCg7M36R/J81GEDQ6zg==
+"@types/webpack-subresource-integrity@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@types/webpack-subresource-integrity/-/webpack-subresource-integrity-1.2.1.tgz#3c9c37ff0b4d21043b29f6e266fa46d8c322be53"
+  integrity sha512-YbYjPZuOrXobDRdJA6Ruk0t3AV1w4KIz3uQ1MGbGAi26tqT6WwZhcypZjFTKol7FOnT5uNU1WCcZCRgz8v/vRA==
   dependencies:
-    "@types/webpack" "*"
+    "@types/webpack" "^4"
 
-"@types/webpack@*", "@types/webpack@^4", "@types/webpack@^4.41.8":
+"@types/webpack@^4", "@types/webpack@^4.41.8":
   version "4.41.27"
   resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.41.27.tgz#f47da488c8037e7f1b2dbf2714fbbacb61ec0ffc"
   integrity sha512-wK/oi5gcHi72VMTbOaQ70VcDxSQ1uX8S2tukBK9ARuGXrYM/+u4ou73roc7trXDNmCxCoerE8zruQqX/wuHszA==
