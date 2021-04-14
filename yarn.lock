@@ -7476,10 +7476,10 @@ onetime@^5.1.0, onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-openpgp@^4.10.7:
-  version "4.10.7"
-  resolved "https://registry.yarnpkg.com/openpgp/-/openpgp-4.10.7.tgz#e969239ebb689093c5a73ea97e73a7d9c2a565eb"
-  integrity sha512-+7EkD/btnvIyGkslB0p3W123u/dajMBcfzMfOIevlZBPvCWLJXGzgNFMM5CYXUNITeBUpxCxwgHeniqr+UfESQ==
+openpgp@^4.10.10:
+  version "4.10.10"
+  resolved "https://registry.yarnpkg.com/openpgp/-/openpgp-4.10.10.tgz#65b58d24466c278120c7f2d1ebc88ef9b15d6361"
+  integrity sha512-Ub48OogGPjNsr0G/wnJ/SyAQzt/tfcXZTWVZdjKFpXCQV1Ca+upFdSPPkBlGG3lb9EQGOKZJ2tzYNH6ZyKMkDQ==
   dependencies:
     asn1.js "^5.0.0"
     node-fetch "^2.1.2"
