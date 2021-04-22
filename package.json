@@ -28,7 +28,7 @@
     "@types/styled-components": "^5.1.9",
     "@types/webpack-subresource-integrity": "^1.2.1",
     "@types/workbox-webpack-plugin": "^5.1.6",
-    "antd": "^4.15.1",
+    "antd": "^4.15.2",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
