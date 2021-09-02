@@ -2187,12 +2187,12 @@
     "@types/source-list-map" "*"
     source-map "^0.7.3"
 
-"@types/webpack-subresource-integrity@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@types/webpack-subresource-integrity/-/webpack-subresource-integrity-1.2.1.tgz#3c9c37ff0b4d21043b29f6e266fa46d8c322be53"
-  integrity sha512-YbYjPZuOrXobDRdJA6Ruk0t3AV1w4KIz3uQ1MGbGAi26tqT6WwZhcypZjFTKol7FOnT5uNU1WCcZCRgz8v/vRA==
+"@types/webpack-subresource-integrity@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/webpack-subresource-integrity/-/webpack-subresource-integrity-5.0.0.tgz#dea90f4527205bcc7fb99399432f31004d3175a4"
+  integrity sha512-u9PamnLCCujELj/O3seVZKH17et1LurxbsgvI41469u9CO9fzlY8DrX8Vaeoc9Fc5T6z9nugN9HFv9yDpfXIvw==
   dependencies:
-    "@types/webpack" "^4"
+    webpack-subresource-integrity "*"
 
 "@types/webpack@^4", "@types/webpack@^4.41.8":
   version "4.41.27"
@@ -10765,6 +10765,11 @@ type-is@~1.6.17, type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
+typed-assert@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/typed-assert/-/typed-assert-1.0.8.tgz#4bf9f1ce7f3f974d09c3afd7c68d12e1391a233c"
+  integrity sha512-5NkbXZUlmCE73Fs7gvkp1XXJWHYetPkg60QnQ2NXQmBYNFxbBr2zA8GCtaH4K2s2WhOmSlgiSTmrjrcm5tnM5g==
+
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/typedarray-to-buffer/-/typedarray-to-buffer-3.1.5.tgz#a97ee7a9ff42691b9f783ff1bc5112fe3fca9080"
@@ -11220,6 +11225,13 @@ webpack-sources@^1.3.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-
   dependencies:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
+
+webpack-subresource-integrity@*:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/webpack-subresource-integrity/-/webpack-subresource-integrity-5.0.0.tgz#8268b9cc1a229a8f8129ca9eeb59cde52185b6b1"
+  integrity sha512-x9514FpLRydO+UAQ8DY4aLtCjxmdLkuQVcDFN1kGzuusREYJ1B0rzk/iIlWiL6dnvrhEGFj2+UsdxDkP8Z4UKg==
+  dependencies:
+    typed-assert "^1.0.8"
 
 webpack-subresource-integrity@^1.5.2:
   version "1.5.2"
