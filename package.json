@@ -63,7 +63,7 @@
     "react-dropzone": "^11.4.2",
     "react-feather": "^2.0.9",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.0.2",
     "styled-components": "^5.3.3"
   },
   "browserslist": [
