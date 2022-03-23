@@ -30,7 +30,7 @@
     "@types/workbox-webpack-plugin": "^5.1.8",
     "antd": "^4.19.3",
     "axios": "^0.26.1",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.4",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "css-loader": "^5.2.7",
     "dotenv": "^16.0.0",
