@@ -55,7 +55,7 @@
     "workbox-webpack-plugin": "^6.5.2"
   },
   "dependencies": {
-    "jszip": "^3.9.0",
+    "jszip": "^3.9.1",
     "nanoid": "^3.3.2",
     "openpgp": "^4.10.10",
     "react": "^17.0.2",
