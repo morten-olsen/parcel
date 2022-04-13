@@ -92,7 +92,6 @@ const createConfig = async (options: Options = {
 
   (config as any).devServer = {
     hot: true,
-    contentBase: './dist',
   };
 
   return config;
