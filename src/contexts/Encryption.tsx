@@ -19,15 +19,16 @@ const EncryptionContext = createContext<EncryptionContextType>({
 });
 
 const encrypt = async (keys: string[], content: string) => {
-  const armoredKeys = await Promise.all(keys.map(openpgp.key.readArmored));
-  const message = openpgp.message.fromText(content);
+  const armoredKeys = await Promise.all(
+    keys.map(key => openpgp.readKeys({ armoredKeys: key })),
+  );
+  const message = await openpgp.createMessage({ text: content });
   const encrypted = await openpgp.encrypt({
     message,
-    armor: true,
-    publicKeys: armoredKeys.reduce<any>((output, key: any) => [...output, ...key.keys], []),
+    encryptionKeys: armoredKeys.reduce<any>((output, key: any) => [...output, ...key], []),
   });
-  const { data } = encrypted;
-  const blob = new Blob([data], {
+  const data = encrypted;
+  const blob = new Blob([data as any], {
     type: 'text/text',
   });
   return blob;

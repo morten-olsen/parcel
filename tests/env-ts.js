@@ -1,19 +1,19 @@
-import NodeEnvironment from 'jest-environment-node';
-import { Server, createServer } from 'http';
-import getPort from 'get-port';
-import webpack from 'webpack';
-import path from 'path';
-import express from 'express';
-import createConfig from '../webpack.config';
+const NodeEnvironment = require('jest-environment-node');
+const { Server, createServer } = require('http');
+const getPort = require('get-port');
+const webpack = require('webpack');
+const path = require('path');
+const express = require('express');
+const { default: createConfig } = require('../webpack.config');
 
-const build = () => new Promise<Server>(async (resolve, reject) => {
+const build = () => new Promise(async (resolve, reject) => {
   const config = await createConfig({
     test: true,
   });
   const port = await getPort();
   const bundler = webpack(config);
   bundler.run((err, stats) => {
-    if (err) {
+    if (err || !stats) {
       return reject(err);
     } else if (stats.hasErrors()) {
       return reject(new Error('Webpack errors'));
@@ -28,22 +28,23 @@ const build = () => new Promise<Server>(async (resolve, reject) => {
 });
 
 class CustomEnvironment extends NodeEnvironment {
-  private _server?: Server;
-
-  constructor(config: any) {
+  constructor(config) {
     super(config);
   }
 
   async setup() {
     await super.setup();
     this._server = await build();
-    const address: any = this._server?.address();
+    const address = this._server.address();
     this.global.testUrl = `http://${address.address}:${address.port}`
   }
 
   async teardown() {
     await super.teardown();
-    this._server?.close();
+    if (!this._server) {
+      return;
+    }
+    this._server.close();
   }
 }
 

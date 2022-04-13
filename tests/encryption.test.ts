@@ -2,7 +2,7 @@ import puppeteer, { Browser, Page } from 'puppeteer';
 import path from 'path';
 import fs from 'fs-extra';
 import { nanoid } from 'nanoid';
-import openpgp, { key, message } from 'openpgp';
+import * as openpgp from 'openpgp';
 
 const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -10,7 +10,7 @@ describe('encryption', () => {
   let browser: Browser;
   let page: Page;
   let tmpDir: string;
-  let keys: key.KeyResult;
+  let keys: openpgp.PrivateKey;
 
   const getText = async (elm: any) => {
     const text = await page.evaluate(el => el.textContent, elm);
@@ -24,7 +24,7 @@ describe('encryption', () => {
       path.join(__dirname, '..', 'test-assets', 'key'),
       'utf-8',
     );
-    keys = await key.readArmored(data);
+    keys = await openpgp.readPrivateKey({ armoredKey: data });
   });
 
   beforeEach(async () => {
@@ -68,8 +68,8 @@ describe('encryption', () => {
     const data = await fs.readFile(downloadPath, 'utf-8');
     
     const decrypted = await openpgp.decrypt({
-      message: await message.readArmored(data),
-      privateKeys: keys.keys[0],
+      message: await openpgp.readMessage({ armoredMessage: data }),
+      decryptionKeys: keys,
     });
     expect(decrypted.data).toBe('Bar');
   });

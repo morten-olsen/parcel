@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import Welcome from './Welcome';
 import {
   Button,
@@ -18,14 +18,14 @@ const Thumb: React.FC = ({
   link,
   className,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <Button
       size="large"
       icon={<Icon />}
       type="link"
       className={className}
-      onClick={() => history.push(link)}
+      onClick={() => navigate(link)}
     >
       {title}
     </Button>

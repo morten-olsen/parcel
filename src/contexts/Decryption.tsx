@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext, createContext, useEffect } from 'react';
-import * as openpgp from 'openpgp';
+import { readMessage, readKey, decrypt as pgpDecrypt, readPrivateKeys, readPrivateKey, generateKey } from 'openpgp';
 import GithubContext from './Github';
 import FileType from '../types/File';
 import { createFile } from '../helpers/files';
@@ -31,15 +31,17 @@ const DecryptionContext = createContext<DecryptionContextType>({
 });
 
 const decrypt = async (privateKey: string, keys: string[], content: string) => {
-  const armoredKeys = await Promise.all(keys.map(openpgp.key.readArmored));
-  const message = await openpgp.message.readArmored(content);
-  const encrypted = await openpgp.decrypt({
+  const armoredKeys = await Promise.all(
+    keys.map(key => readKey({ armoredKey: key })),
+  );
+  const message = await readMessage({ armoredMessage: content });
+  const encrypted = await pgpDecrypt({
     message,
-    privateKeys: [...(await openpgp.key.readArmored(privateKey)).keys],
-    publicKeys: armoredKeys.reduce<any>((output, key: any) => [...output, ...key.keys], []),
+    decryptionKeys: await readPrivateKeys({ armoredKeys: privateKey }),
+    verificationKeys: armoredKeys.reduce<any>((output, key: any) => [...output, ...key], []),
   });
   const { data } = encrypted;
-  const blob = new Blob([data], {
+  const blob = new Blob([data as any], {
     type: 'text/text',
   });
   return blob;
@@ -65,8 +67,8 @@ const DecryptionProvider: React.FC = ({
       const currentRawKey = localStorage.getItem('key');
       if (currentRawKey) {
         setPrivateKey(currentRawKey);
-        const key = await openpgp.key.readArmored(currentRawKey);
-        setPublicKey(key.keys[0].toPublic().armor());
+        const key = await readPrivateKey({ armoredKey: currentRawKey });
+        setPublicKey(key.toPublic().armor());
       }
     };
 
@@ -80,14 +82,14 @@ const DecryptionProvider: React.FC = ({
   };
 
   const createKey = async () => {
-    const key = await openpgp.generateKey({
-      userIds: [{ name: 'unknown unknown', email: 'unknown@unknown.foo'}],
+    const key = await generateKey({
+      userIDs: [{ name: 'unknown unknown', email: 'unknown@unknown.foo'}],
       curve: 'ed25519',
     });
 
-    setPrivateKey(key.privateKeyArmored);
-    setPublicKey(key.publicKeyArmored);
-    localStorage.setItem('key', key.privateKeyArmored);
+    setPrivateKey(key.privateKey);
+    setPublicKey(key.publicKey);
+    localStorage.setItem('key', key.privateKey);
   }
 
   const addFile = useCallback(async (file: File) => {
