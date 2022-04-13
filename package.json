@@ -35,7 +35,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "fs-extra": "^10.0.1",
-    "get-port": "^5",
+    "get-port": "^6",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
     "offline-plugin": "^5.0.7",
