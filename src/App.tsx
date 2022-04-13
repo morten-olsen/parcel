@@ -1,5 +1,4 @@
 import React from 'react';
-import { hot } from 'react-hot-loader/root';
 import { Layout } from 'antd';
 import { HashRouter as Router } from 'react-router-dom';
 import { GithubProvider } from './contexts/Github';
@@ -12,9 +11,9 @@ const App: React.FC = () => {
     <GithubProvider>
       <EncryptionProvider>
         <DecryptionProvider>
-          <Layout style={{minHeight:"100vh"}}>
+          <Layout style={{ minHeight: '100vh' }}>
             <Router>
-              <AppRouter/>
+              <AppRouter />
             </Router>
           </Layout>
         </DecryptionProvider>
@@ -23,4 +22,4 @@ const App: React.FC = () => {
   );
 };
 
-export default hot(App);
+export default App;

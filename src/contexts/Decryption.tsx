@@ -1,5 +1,19 @@
-import React, { useState, useCallback, useContext, createContext, useEffect } from 'react';
-import { readMessage, readKey, decrypt as pgpDecrypt, readPrivateKeys, readPrivateKey, generateKey } from 'openpgp';
+import React, {
+  useState,
+  useCallback,
+  useContext,
+  createContext,
+  useEffect,
+  ReactNode,
+} from 'react';
+import {
+  readMessage,
+  readKey,
+  decrypt as pgpDecrypt,
+  readPrivateKeys,
+  readPrivateKey,
+  generateKey,
+} from 'openpgp';
 import GithubContext from './Github';
 import FileType from '../types/File';
 import { createFile } from '../helpers/files';
@@ -9,10 +23,14 @@ interface DecryptionContextType {
   privateKey: string | undefined;
   createKey: (name: string, email: string) => void;
   deleteKey: () => void;
-  files: {[id: string]: FileType};
+  files: { [id: string]: FileType };
   addFile: (file: File) => Promise<void>;
   deleteFile: (id: string) => void;
 }
+
+type DecryptionProviderProps = {
+  children: ReactNode;
+};
 
 const removeExtension = (name: string) => {
   const parts = name.split('.');
@@ -24,21 +42,32 @@ const DecryptionContext = createContext<DecryptionContextType>({
   publicKey: undefined,
   privateKey: undefined,
   files: {},
-  createKey: async () => { throw new Error('Not using provider'); },
-  deleteKey: async () => { throw new Error('Not using provider'); },
-  addFile: async () => { throw new Error('Not using provider'); },
-  deleteFile: async () => { throw new Error('Not using provider'); },
+  createKey: async () => {
+    throw new Error('Not using provider');
+  },
+  deleteKey: async () => {
+    throw new Error('Not using provider');
+  },
+  addFile: async () => {
+    throw new Error('Not using provider');
+  },
+  deleteFile: async () => {
+    throw new Error('Not using provider');
+  },
 });
 
 const decrypt = async (privateKey: string, keys: string[], content: string) => {
   const armoredKeys = await Promise.all(
-    keys.map(key => readKey({ armoredKey: key })),
+    keys.map((key) => readKey({ armoredKey: key }))
   );
   const message = await readMessage({ armoredMessage: content });
   const encrypted = await pgpDecrypt({
     message,
     decryptionKeys: await readPrivateKeys({ armoredKeys: privateKey }),
-    verificationKeys: armoredKeys.reduce<any>((output, key: any) => [...output, ...key], []),
+    verificationKeys: armoredKeys.reduce<any>(
+      (output, key: any) => [...output, ...key],
+      []
+    ),
   });
   const { data } = encrypted;
   const blob = new Blob([data as any], {
@@ -47,7 +76,7 @@ const decrypt = async (privateKey: string, keys: string[], content: string) => {
   return blob;
 };
 
-const DecryptionProvider: React.FC = ({
+const DecryptionProvider: React.FC<DecryptionProviderProps> = ({
   children,
 }) => {
   const { keys } = useContext(GithubContext);
@@ -55,12 +84,15 @@ const DecryptionProvider: React.FC = ({
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
   const [files, setFiles] = useState<DecryptionContextType['files']>({});
 
-  const deleteFile = useCallback((id: string) => {
-    delete files[id];
-    setFiles({
-      ...files,
-    });
-  }, [files]);
+  const deleteFile = useCallback(
+    (id: string) => {
+      delete files[id];
+      setFiles({
+        ...files,
+      });
+    },
+    [files]
+  );
 
   useEffect(() => {
     const run = async () => {
@@ -83,29 +115,34 @@ const DecryptionProvider: React.FC = ({
 
   const createKey = async () => {
     const key = await generateKey({
-      userIDs: [{ name: 'unknown unknown', email: 'unknown@unknown.foo'}],
+      userIDs: [{ name: 'unknown unknown', email: 'unknown@unknown.foo' }],
       curve: 'ed25519',
     });
 
     setPrivateKey(key.privateKey);
     setPublicKey(key.publicKey);
     localStorage.setItem('key', key.privateKey);
-  }
+  };
 
-  const addFile = useCallback(async (file: File) => {
-    if (!keys || !privateKey) return;
-    const addedFile = createFile(setFiles, removeExtension(file.name));
-    const reader = new FileReader()
+  const addFile = useCallback(
+    async (file: File) => {
+      if (!keys || !privateKey) {
+        return;
+      }
+      const addedFile = createFile(setFiles, removeExtension(file.name));
+      const reader = new FileReader();
 
-    reader.onabort = addedFile.setFailed,
-    reader.onerror = addedFile.setFailed,
-    reader.onload = () => {
-      addedFile.setContent(
-        decrypt(privateKey, keys, reader.result as string),
-      );
-    }
-    reader.readAsText(file);
-  }, [keys, privateKey]);
+      (reader.onabort = addedFile.setFailed),
+        (reader.onerror = addedFile.setFailed),
+        (reader.onload = () => {
+          addedFile.setContent(
+            decrypt(privateKey, keys, reader.result as string)
+          );
+        });
+      reader.readAsText(file);
+    },
+    [keys, privateKey]
+  );
 
   return (
     <DecryptionContext.Provider
@@ -124,8 +161,6 @@ const DecryptionProvider: React.FC = ({
   );
 };
 
-export {
-  DecryptionProvider,
-};
+export { DecryptionProvider };
 
-export default DecryptionContext;;
+export default DecryptionContext;

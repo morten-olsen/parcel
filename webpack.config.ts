@@ -4,6 +4,7 @@ import axios from 'axios';
 import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import path from 'path';
 
 interface Options {
@@ -19,7 +20,9 @@ const [username] = repo.split('/');
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
 const getData = async () => {
-  const { data: keyList } = await axios.get(`https://api.github.com/users/${username}/gpg_keys`);
+  const { data: keyList } = await axios.get(
+    `https://api.github.com/users/${username}/gpg_keys`
+  );
   if (keyList.length === 0) {
     throw new Error(`The user ${username} does not have any GPG keys`);
   }
@@ -32,26 +35,26 @@ const getData = async () => {
 };
 
 const getTestData: typeof getData = async () => {
-  const pubKey = fs.readFileSync(path.join(__dirname, 'test-assets', 'key.pub'), 'utf-8');
+  const pubKey = fs.readFileSync(
+    path.join(__dirname, 'test-assets', 'key.pub'),
+    'utf-8'
+  );
   return {
     username: 'foobar',
-    keys: [
-      pubKey,
-    ],
+    keys: [pubKey],
   };
 };
 
-const createConfig = async (options: Options = {
-  test: false,
-}):Promise<Configuration> => {
+const createConfig = async (
+  options: Options = {
+    test: false,
+  }
+): Promise<Configuration> => {
   const data = await (options.test ? getTestData() : getData());
   const config: Configuration = {
     mode: __DEV__ ? 'development' : 'production',
     entry: {
-      app: [
-        ...(__DEV__ ? ['react-hot-loader/patch'] : []),
-        path.join(__dirname, 'src', 'index.tsx'),
-      ],
+      app: [path.join(__dirname, 'src', 'index.tsx')],
     },
     output: {
       path: path.join(__dirname, 'dist'),
@@ -59,9 +62,6 @@ const createConfig = async (options: Options = {
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
-      alias: {
-        'react-dom': '@hot-loader/react-dom',
-      },
     },
     plugins: [
       new webpack.DefinePlugin({
@@ -73,20 +73,27 @@ const createConfig = async (options: Options = {
         minify: true,
         template: path.join(__dirname, 'html.html'),
       }),
-      new WorkboxWebpackPlugin.GenerateSW({
-        swDest: 'sw.js',
-        clientsClaim: true,
-        skipWaiting: true,
-      }),
+      ...(__DEV__
+        ? [new ReactRefreshWebpackPlugin()]
+        : [
+            new WorkboxWebpackPlugin.GenerateSW({
+              swDest: 'sw.js',
+              clientsClaim: true,
+              skipWaiting: true,
+            }),
+          ]),
     ],
     module: {
-      rules: [{
-        test: /\.tsx?$/,
-        use: ['babel-loader'],
-      }, {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      }],
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: ['babel-loader'],
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+        },
+      ],
     },
   };
 

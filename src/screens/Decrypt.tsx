@@ -13,10 +13,7 @@ const Decrypt: React.FC = () => {
       {Object.keys(files).length > 0 && (
         <>
           <Divider>Files</Divider>
-          <FileList
-            files={files}
-            deleteFile={deleteFile}
-          />
+          <FileList files={files} deleteFile={deleteFile} />
         </>
       )}
     </>

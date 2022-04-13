@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        uses: actions/checkout@v2.3.1
         with:
           persist-credentials: false
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      - name: Install and Build 🔧
         run: |
+          corepack enable
           yarn install
           NODE_ENV=production yarn build
 
@@ -22,5 +23,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+          branch: gh-pages
+          folder: dist

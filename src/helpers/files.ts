@@ -11,7 +11,7 @@ export const downloadLink = (name: string, blob: Blob) => {
   document.body.removeChild(downloadLink);
 };
 
-//type SetFilesType = (fn: (files: {[id: string]: File}) => {[id: string]: File}) => any; 
+//type SetFilesType = (fn: (files: {[id: string]: File}) => {[id: string]: File}) => any;
 type SetFilesType = any;
 
 export const createFile = (setFiles: SetFilesType, name: string) => {
@@ -38,7 +38,7 @@ export const createFile = (setFiles: SetFilesType, name: string) => {
         }));
       })
       .catch(setFailed);
-  }
+  };
 
   const setFailed = (err: any) => {
     console.error(err);

@@ -10,7 +10,7 @@ interface FileProcessing extends FileBase {
 }
 
 interface FileFailed extends FileBase {
-  status: 'failed',
+  status: 'failed';
   error: any;
 }
 

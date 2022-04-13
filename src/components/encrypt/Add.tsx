@@ -12,9 +12,16 @@ const Add: React.FC = () => {
   return (
     <>
       <Divider>
-        <Radio.Group onChange={evt => setType(evt.target.value)} defaultValue={DEFAULT_VALUE}>
-          <Radio.Button className="add-text-tab" value="text"><FileTextOutlined /> Text</Radio.Button>
-          <Radio.Button className="add-file-tab" value="file"><FileOutlined /> File</Radio.Button>
+        <Radio.Group
+          onChange={(evt) => setType(evt.target.value)}
+          defaultValue={DEFAULT_VALUE}
+        >
+          <Radio.Button className="add-text-tab" value="text">
+            <FileTextOutlined /> Text
+          </Radio.Button>
+          <Radio.Button className="add-file-tab" value="file">
+            <FileOutlined /> File
+          </Radio.Button>
         </Radio.Group>
       </Divider>
       {type === 'text' && <AddText />}

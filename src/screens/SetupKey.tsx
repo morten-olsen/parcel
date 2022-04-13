@@ -10,11 +10,7 @@ import {
 } from '@ant-design/icons';
 
 const SetupKey: React.FC = () => {
-  const {
-    createKey,
-    deleteKey,
-    publicKey,
-  } = useContext(DecryptionContext);
+  const { createKey, deleteKey, publicKey } = useContext(DecryptionContext);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -33,15 +29,15 @@ const SetupKey: React.FC = () => {
   if (!publicKey) {
     return (
       <>
-        <Space direction="vertical" style={{ textAlign: 'center' }} >
+        <Space direction="vertical" style={{ textAlign: 'center' }}>
           <LockTwoTone style={{ fontSize: 150 }} />
           <Typography.Title>Create your sharing key</Typography.Title>
           <p>
-            Before I can send protected information to you I need a "sharing" key, which is a key that gets stored this device, allowing this device (and this device only) to read the informations I am sending.
+            Before I can send protected information to you I need a "sharing"
+            key, which is a key that gets stored this device, allowing this
+            device (and this device only) to read the informations I am sending.
           </p>
-          <p>
-            After creating it you need to send it to me
-          </p>
+          <p>After creating it you need to send it to me</p>
         </Space>
         <Form>
           <Form.Item>
@@ -50,7 +46,7 @@ const SetupKey: React.FC = () => {
               size="large"
               prefix={<UserOutlined />}
               value={name}
-              onChange={evt => setName(evt.target.value)}
+              onChange={(evt) => setName(evt.target.value)}
             />
           </Form.Item>
           <Form.Item>
@@ -59,10 +55,10 @@ const SetupKey: React.FC = () => {
               size="large"
               prefix={<MailOutlined />}
               value={email}
-              onChange={evt => setEmail(evt.target.value)}
-              />
+              onChange={(evt) => setEmail(evt.target.value)}
+            />
           </Form.Item>
-          <Form.Item style={{ textAlign: 'center' }} >
+          <Form.Item style={{ textAlign: 'center' }}>
             <Button
               disabled={!name || !email}
               type="primary"
@@ -81,13 +77,12 @@ const SetupKey: React.FC = () => {
       <div style={{ textAlign: 'center' }}>
         <RocketTwoTone style={{ fontSize: 150 }} />
         <Typography.Title>Okay, you are all set.</Typography.Title>
+        <p>Just send me your sharing key, and I will send files using it.</p>
         <p>
-          Just send me your sharing key, and I will send files using it.
+          Remember that you need to go to this website on this device to decrypt
+          the files after receiving them
         </p>
-        <p>
-          Remember that you need to go to this website on this device to decrypt the files after receiving them
-        </p>
-        <Space direction="vertical" size="large"> 
+        <Space direction="vertical" size="large">
           <Button
             onClick={downloadPublicKey}
             type="primary"
@@ -96,15 +91,8 @@ const SetupKey: React.FC = () => {
           >
             Download sharing key
           </Button>
-          <Popconfirm
-          title="Are you sure?"
-            onConfirm={deleteKey}
-          >
-            <Button
-              danger
-              size="small"
-              type="link"
-            >
+          <Popconfirm title="Are you sure?" onConfirm={deleteKey}>
+            <Button danger size="small" type="link">
               Delete sharing key
             </Button>
           </Popconfirm>

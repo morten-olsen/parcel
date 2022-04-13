@@ -3,4 +3,5 @@
 /.cache
 /.env
 /.tmp
+/.yarn
 *.log
