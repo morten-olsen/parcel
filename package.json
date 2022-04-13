@@ -52,7 +52,7 @@
     "webpack-dev-server": "^4.8.1",
     "webpack-pwa-manifest": "^4.3.0",
     "webpack-subresource-integrity": "^1.5.2",
-    "workbox-webpack-plugin": "^6.5.2"
+    "workbox-webpack-plugin": "^6.5.3"
   },
   "dependencies": {
     "jszip": "^3.9.1",
