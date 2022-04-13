@@ -13,13 +13,18 @@ const Encrypt: React.FC = () => {
       {Object.keys(files).length > 0 && (
         <>
           <Divider>Files</Divider>
-          <FileList
-            files={files}
-            deleteFile={deleteFile}
-          />
+          <FileList files={files} deleteFile={deleteFile} />
           <Divider />
-          <i style={{ textAlign: 'center', paddingTop: '10px', display: 'block', fontSize: 12 }}>
-            Note: files are not send to me, you still have to download the encrypted files and send it to me.
+          <i
+            style={{
+              textAlign: 'center',
+              paddingTop: '10px',
+              display: 'block',
+              fontSize: 12,
+            }}
+          >
+            Note: files are not send to me, you still have to download the
+            encrypted files and send it to me.
           </i>
         </>
       )}

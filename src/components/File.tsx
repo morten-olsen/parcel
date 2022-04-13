@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  List,
-  Button,
-  Popconfirm,
-} from 'antd';
+import { List, Button, Popconfirm } from 'antd';
 import {
   DeleteOutlined,
   SyncOutlined,
@@ -25,24 +21,17 @@ const iconStyle = {
   },
 };
 
-const icons: {[name: string]: any} = {
+const icons: { [name: string]: any } = {
   processing: <SyncOutlined spin {...iconStyle} />,
   failed: <IssuesCloseOutlined {...iconStyle} />,
   success: <LockOutlined {...iconStyle} />,
 };
 
 const IconText = ({ icon, text, ...props }) => (
-  <Button
-    {...props}
-    shape="round"
-    icon={React.createElement(icon)}
-  />
+  <Button {...props} shape="round" icon={React.createElement(icon)} />
 );
 
-const FileView: React.FC<Props> = ({
-  file,
-  remove,
-}) => {
+const FileView: React.FC<Props> = ({ file, remove }) => {
   const icon = icons[file.status];
   const actions = [];
 
@@ -54,11 +43,7 @@ const FileView: React.FC<Props> = ({
         okText="Yes"
         cancelText="No"
       >
-        <IconText
-          icon={DeleteOutlined}
-          danger
-          text="Delete"
-        />
+        <IconText icon={DeleteOutlined} danger text="Delete" />
       </Popconfirm>
     );
   }
@@ -76,14 +61,8 @@ const FileView: React.FC<Props> = ({
   }
 
   return (
-    <List.Item
-      actions={actions}
-      className="msg-item"
-    >
-      <List.Item.Meta
-        avatar={icon}
-        title={file.name}
-      />
+    <List.Item actions={actions} className="msg-item">
+      <List.Item.Meta avatar={icon} title={file.name} />
     </List.Item>
   );
 };

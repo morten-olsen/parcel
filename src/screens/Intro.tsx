@@ -1,23 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import Welcome from './Welcome';
-import {
-  Button,
-  Space,
-} from 'antd';
+import { Button, Space } from 'antd';
 import {
   UploadOutlined,
   DownloadOutlined,
   KeyOutlined,
 } from '@ant-design/icons';
 
-
-const Thumb: React.FC = ({
-  title,
-  Icon,
-  link,
-  className,
-}) => {
+const Thumb: React.FC = ({ title, Icon, link, className }) => {
   const navigate = useNavigate();
   return (
     <Button
@@ -43,7 +34,7 @@ const Intro = () => {
           link="/send"
           className="send-btn"
           Icon={UploadOutlined}
-        /> 
+        />
         <Thumb
           link="/key"
           className="want-to-receive-btn"

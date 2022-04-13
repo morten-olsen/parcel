@@ -1,3 +1,5 @@
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const config = (api) => {
   api.cache(false);
   return {
@@ -12,8 +14,8 @@ const config = (api) => {
           'GITHUB_REPOSITORY',
         ],
       }],
-      [require.resolve('react-hot-loader/babel')],
-    ],
+      isDevelopment && require.resolve('react-refresh/babel'),
+    ].filter(Boolean),
   };
 };
 
