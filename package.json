@@ -29,7 +29,7 @@
     "@types/workbox-webpack-plugin": "^5.1.8",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "axios": "^0.26.1",
-    "babel-loader": "^8.2.4",
+    "babel-loader": "^9.1.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "css-loader": "^6.7.1",
     "dotenv": "^16.0.0",
